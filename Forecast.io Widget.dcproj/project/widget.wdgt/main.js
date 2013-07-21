@@ -6,7 +6,7 @@ watchId = null;
 function load()
 {
     dashcode.setupParts();
-    updateForecastEmbed();
+    if( !(widget.preferenceForKey('latitude') == undefined || widget.preferenceForKey('longitude') == undefined || widget.preferenceForKey('name') == undefined) ) updateForecastEmbed();
     
     var Anchors = document.getElementsByTagName("a");
 
