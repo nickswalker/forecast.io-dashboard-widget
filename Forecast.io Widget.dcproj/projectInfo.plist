@@ -99,8 +99,6 @@
 			</array>
 			<key>TemplateIdentifier</key>
 			<string>com.apple.Dashcode.template.custom</string>
-			<key>UseCustomDefaultImage</key>
-			<true/>
 		</dict>
 	</dict>
 	<key>CYProjectFormatVersion</key>

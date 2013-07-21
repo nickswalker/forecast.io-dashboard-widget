@@ -74,7 +74,7 @@ function showBack(event)
 {
     document.getElementById('latitude').value = widget.preferenceForKey('latitude');
     document.getElementById('longitude').value = widget.preferenceForKey('longitude');
-    document.getElementById('name').value = widget.preferenceForKey('name');
+	if ( !(widget.preferenceForKey('name') == undefined) ) document.getElementById('name').value = widget.preferenceForKey('name');
     var front = document.getElementById("front");
     var back = document.getElementById("back");
 
@@ -99,7 +99,7 @@ function showBack(event)
 //
 function showFront(event)
 {
-    if( widget.preferenceForKey('latitude') == '' || widget.preferenceForKey('longitude') == '' || widget.preferenceForKey('name') == ''){
+    if( document.getElementById("latitude").value == '' || document.getElementById("longitude").value == '' || document.getElementById("name").value == ''){
         return false;
     }
     widget.setPreferenceForKey( document.getElementById("latitude").value, 'latitude');
