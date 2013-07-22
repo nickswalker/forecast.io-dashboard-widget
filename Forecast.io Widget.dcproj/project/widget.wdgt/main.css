@@ -11,6 +11,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 10px;
     font-family: 'HelveticaNeue';
     color: black;
+	border-radius: 6px;
 }
 #front {
     background-color: white;
@@ -49,6 +50,7 @@ input{
     border: 1px solid rgba(255,255,255,.1);
     color: white;
     background-color: transparent;
+	padding-left: 5px;
 }
 #latitude {
     width: 49%;

@@ -2,7 +2,6 @@
 // Function: load()
 // Called by HTML body element's onload event when the widget is ready to start
 //
-watchId = null;
 function load()
 {
     dashcode.setupParts();
@@ -18,6 +17,11 @@ for (var i = 0; i < Anchors.length ; i++) {
         }, 
         false);
 }
+	var currentLocationButton = document.getElementById('current-location');
+	currentLocationButton.addEventListener("click", function(event){
+		event.preventDefault();
+		geoLocate();
+		 });
 }
 
 //
@@ -129,62 +133,5 @@ function updateForecastEmbed()
 {
 	var forecast= document.getElementById('forecast');
    forecast.parentNode.removeChild(forecast);
-    document.getElementById('forecast-container').innerHTML='<iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat='+widget.preferenceForKey('latitude')+'&lon='+String(widget.preferenceForKey('longitude'))+'&name='+widget.preferenceForKey('name')+'&color=#007bff"> </iframe>';
- //98.667348   
-}
-
-function acquireLocation(event)
-{
-	if (navigator.geolocation)
-	{
-        
-        // Register for location changes and pass the returned position to the forecast method
-		watchId = navigator.geolocation.watchPosition(updateLocation, handleError);
-	}
-	else
-	{  
-       // Display a message if Geolocation is unavailable
-	   document.getElementById("location").innerHTML="<p>Your browser does not support Geolocation services.</p>";
-	}
-}
-function handleError(error) 
-{
-    var errorMessage;
-    switch (error.code)
-    {
-        case error.code.PERMISSION_DENIED:
-            errorMessage = "Permission Denied";
-            break;
-        case error.code.POSITION_UNAVAILABLE:
-            errorMessage = "Position Unavailable";
-            break;	
-        case error.code.TIMEOUT:
-            errorMessage = "Time Out";
-            break;
-        case error.code.UNKNOWN_ERROR:
-            errorMessage = "Unknown Error";
-            break;	
-    }
-    // Display and log the error message
-    document.getElementById("location").innerHTML = "<p>"+errorMessage+"</p>";
-}
-// Unregister for location changes when the user quits the application
-function clearWatchId()
-{
-	if(watchId) 
-    {
-        navigator.geolocation.clearWatch(watchId);
-		watchId = null;
-    }
-}
-//Update the map if the current location is different from the previous location
-function updateLocation(position)
-{
-    // Update the map if the current position is different from the previous position
-	if ((latitude != position.coords.latitude)||(longitude != position.coords.longitude))
-	{
-    	latitude = position.coords.latitude;
-		longitude = position.coords.longitude;
-    }
- 
+    document.getElementById('forecast-container').innerHTML='<iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat='+widget.preferenceForKey('latitude')+'&lon='+String(widget.preferenceForKey('longitude'))+'&name='+widget.preferenceForKey('name')+'&color=#007bff"> </iframe>'; 
 }
