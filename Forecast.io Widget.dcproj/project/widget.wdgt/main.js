@@ -2,13 +2,14 @@
 // Function: load()
 // Called by HTML body element's onload event when the widget is ready to start
 //
+var timer;
 function load()
 {
     dashcode.setupParts();
     if( !(widget.preferenceForKey('latitude') == undefined || widget.preferenceForKey('longitude') == undefined || widget.preferenceForKey('name') == undefined) ) updateForecastEmbed();
     
     var Anchors = document.getElementsByTagName("a");
-
+	timer = window.setInterval(updateForecastEmbed, 300000);
 for (var i = 0; i < Anchors.length ; i++) {
     Anchors[i].addEventListener("click", 
         function (event) {
@@ -17,11 +18,6 @@ for (var i = 0; i < Anchors.length ; i++) {
         }, 
         false);
 }
-	var currentLocationButton = document.getElementById('current-location');
-	currentLocationButton.addEventListener("click", function(event){
-		event.preventDefault();
-		geoLocate();
-		 });
 }
 
 //
@@ -76,6 +72,7 @@ function sync()
 //
 function showBack(event)
 {
+	clearInterval(timer);
     document.getElementById('latitude').value = widget.preferenceForKey('latitude');
     document.getElementById('longitude').value = widget.preferenceForKey('longitude');
 	if ( !(widget.preferenceForKey('name') == undefined) ) document.getElementById('name').value = widget.preferenceForKey('name');
@@ -103,6 +100,7 @@ function showBack(event)
 //
 function showFront(event)
 {
+	timer = window.setInterval(updateForecastEmbed, 300000);
     if( document.getElementById("latitude").value == '' || document.getElementById("longitude").value == '' || document.getElementById("name").value == ''){
         return false;
     }

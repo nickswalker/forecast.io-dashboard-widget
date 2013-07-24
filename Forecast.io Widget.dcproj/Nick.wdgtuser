@@ -3,9 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>Breakpoints</key>
-	<dict/>
+	<dict>
+		<key>widget.wdgt/main.js:137</key>
+		<string></string>
+	</dict>
 	<key>CYLastWindowPosition</key>
-	<string>{135, 253}</string>
+	<string>{42, 176}</string>
 	<key>ContentSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
@@ -16,12 +19,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1671, 575}}</string>
-			<string>{{0, 585}, {1671, 371}}</string>
+			<string>{{0, 0}, {713, 575}}</string>
+			<string>{{0, 585}, {713, 371}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
-	<integer>0</integer>
+	<integer>2</integer>
 	<key>DeploymentOptions</key>
 	<dict>
 		<key>CompressJavaScript</key>
@@ -52,11 +55,11 @@
 		<key>sizes</key>
 		<array>
 			<string>{{0, 0}, {244, 977}}</string>
-			<string>{{245, 0}, {1672, 977}}</string>
+			<string>{{245, 0}, {714, 977}}</string>
 		</array>
 	</dict>
 	<key>MainWindowFrame</key>
-	<string>4 60 1916 998 0 0 1920 1058 </string>
+	<string>962 60 958 998 0 0 1920 1058 </string>
 	<key>NavigatorSplitViewGeometry</key>
 	<dict>
 		<key>ContentSplitViewConfig</key>
@@ -88,7 +91,11 @@
 			</array>
 		</array>
 		<key>Objects view last selections</key>
-		<array/>
+		<array>
+			<array>
+				<integer>2</integer>
+			</array>
+		</array>
 		<key>Opened Steps</key>
 		<array>
 			<integer>0</integer>
@@ -96,7 +103,7 @@
 		</array>
 		<key>Visible StackLayout Views</key>
 		<array>
-			<string>front</string>
+			<string>back</string>
 		</array>
 	</dict>
 </dict>
