@@ -131,5 +131,5 @@ function updateForecastEmbed()
 {
 	var forecast= document.getElementById('forecast');
    forecast.parentNode.removeChild(forecast);
-    document.getElementById('forecast-container').innerHTML='<iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat='+widget.preferenceForKey('latitude')+'&lon='+String(widget.preferenceForKey('longitude'))+'&name='+widget.preferenceForKey('name')+'&color=#007bff"> </iframe>'; 
+    document.getElementById('forecast-container').innerHTML='<iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat='+widget.preferenceForKey('latitude')+'&lon='+String(widget.preferenceForKey('longitude'))+'&name='+widget.preferenceForKey('name')+'&color=#007bff&static-skycons=true"> </iframe>'; 
 }
