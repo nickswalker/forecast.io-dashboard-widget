@@ -1,31 +1,38 @@
-
 <html>
 <head>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleAnimator.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="main.css">
-    <script type="text/javascript" src="Parts/parts.js" charset="utf-8"></script>
-    <script type="text/javascript" src="main.js" charset="utf-8"></script>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="file:///System/Library/WidgetResources/AppleClasses/AppleAnimator.js" charset="utf-8"></script>
+	<link rel="stylesheet" href="main.css">
+	<script type="text/javascript" src="Parts/parts.js" charset="utf-8"></script>
+	<script type="text/javascript" src="main.js" charset="utf-8"></script>
 </head>
 <body onload="load();" apple-part="com.apple.Dashcode.part.StackLayout">
-    <div id="front">
-        <button id="info" onclick="showBack(event)"></button>
-        <div id="forecast-container">
-            <iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat=42.3583&lon=-71.0603&name=Downtown Boston&color=#007bff"> </iframe>
-        </div>
-        <div id="error"></div>
-    </div>
-    <div id="back">
-        <div id="backing">
-        <input id="latitude" type="number" name="Latitude" min="0" max="90" value="" placeholder="Latitude">
-        <input id="longitude" type="number" name="Longitude" min="-180" max="180" value="" placeholder="Longitude">
-        <input id="name" type="text" name="Name" value="" placeholder="Location Name">
-        <button id="done" onclick="showFront(event)">Done</button>
-        <div id="bottom-links">
-        <a id="powered-by" style="margin-right:10px;"href="http://forecast.io">Powered by Forecast.io</a>
-        <a id="credit" href="http://nickswalker.com">Nick Walker</a>
-        </div>
-        </div>
-    </div>
+	<div id="front">
+		<button id="info" onclick="showBack(event)"></button>
+		<div id="forecast-container">
+			<h1 id="update-settings-notice">Flip to the back and update your settings.</h1>
+		</div>
+		<div id="error"></div>
+	</div>
+	<div id="back">
+		<div id="backing">
+		<input id="latitude" type="number" name="latitude" min="0" max="90" value="" placeholder="Latitude">
+		<input id="longitude" type="number" name="longitude" min="-180" max="180" value="" placeholder="Longitude">
+		<input id="name" type="text" name="name" value="" placeholder="Location Name">
+		<div id="units-list">
+			<span class="section-label">Units</span>
+			<span>U.S.</span><input class="units" type="radio" name ="units" value="us" title="mph and °F">
+			<span>Ca</span><input class="units" type="radio" name ="units" value="ca" title="km/h and °C">
+			<span>U.K.</span><input class="units" type="radio" name ="units" value="uk" title="mph and °C">
+			<span>SI</span><input class="units" type="radio" name ="units" value="si" title="m/s and °C">
+		</div>
+		<button id="done" onclick="showFront(event)">Done</button>
+		<div id="bottom-links">
+		<a id="powered-by" style="margin-right:10px;" href="http://forecast.io">Powered by Forecast.io</a>
+		<a id="credit" style="margin-right:10px;" href="http://nickswalker.com">Nick Walker</a>
+		<a id="version" href="https://github.com/nickswalker/forecast.io-dashboard-widget/releases">v1.1</a>
+		</div>
+		</div>
+	</div>
 </body>
 </html>
