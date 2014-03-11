@@ -147,6 +147,9 @@ a   {
 	bottom: 15px;
 	left 15px;
 }
+#bottom-links a	{
+	color: rgba(255,255,255,.5);
+}
 #powered-by {  
 	margin-right: 15px;
 }
