@@ -1,12 +1,19 @@
 // Called by HTML body element's onload event when the widget is ready to start
 function load(){
 	addListenersToAnchors();
-	if (window.widget){
+    document.getElementById('latitude').onchange = populateLocationName;
+    document.getElementById('longitude').onchange = populateLocationName;
+    document.getElementById('name').onchange = populateLatLong;
+	
+    if (window.widget){
 		widget.onshow = onShow;
 		widget.onhide = onHide;
 	}
 	dashcode.setupParts();
-	if( !(widget.preferenceForKey('latitude') == undefined || widget.preferenceForKey('longitude') == undefined || widget.preferenceForKey('name') == undefined || widget.preferenceForKey('units') == undefined) ) updateForecastEmbed();
+    //See if we can update the display, if not...
+	if(!updateForecastEmbed()){  
+        //configureByGeolocation();
+    }
 	
 }
 
@@ -19,21 +26,19 @@ function remove(){
 // Called when the widget has been hidden
 function onHide(){
 	removeForecastEmbed();
-	// Stop any timers to prevent CPU usage
+	// The skyicons suck up CPU even when they're off screen.
 }
-
 
 // Called when the widget has been shown
 function onShow(){
-	updateForecastEmbed();
+    if(!updateForecastEmbed()) {
+        //configureByGeolocation();
+    }
 }
 
 // Called when the info button is clicked to show the back of the widget
 function showBack(event){
-	document.getElementById('latitude').value = widget.preferenceForKey('latitude');
-	document.getElementById('longitude').value = widget.preferenceForKey('longitude');
-	setCheckedRadio(document.getElementsByName('units'), widget.preferenceForKey('units'));
-	if ( !(widget.preferenceForKey('name') == undefined) ) document.getElementById('name').value = widget.preferenceForKey('name');
+    configureBack(widget.preferenceForKey(makeKey('latitude')), widget.preferenceForKey(makeKey('longitude')), widget.preferenceForKey(makeKey('name')), widget.preferenceForKey(makeKey('units')) )
 
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
@@ -53,17 +58,30 @@ function showBack(event){
 
 // Called when the done button is clicked from the back of the widget
 function showFront(event){
-	if( document.getElementById("latitude").value == '' || document.getElementById("longitude").value == '' || document.getElementById("name").value == ''){
+       //We've got to have coordinates
+	if( document.getElementById("latitude").value == '' || document.getElementById("longitude").value == '')        {
 		return false;
 	}
+    //If they didn't provide a location, try to pull one out of the coordinates
+    if( document.getElementById("name").value == ''){
+        var geocodeResults = reverseGeocode(document.getElementById("latitude").value, document.getElementById("longitude").value, null);
+      document.getElementById("name").value = geocodeResults;  
+    }
+
 	var unitsButton = getCheckedRadio(document.getElementsByClassName("units"));
-	widget.setPreferenceForKey( document.getElementById("latitude").value, 'latitude');
-	widget.setPreferenceForKey( document.getElementById("longitude").value, 'longitude');
-	widget.setPreferenceForKey( document.getElementById("name").value, 'name');
-	widget.setPreferenceForKey( unitsButton.value, 'units');
-	widget.setPreferenceForKey( '007bff', 'color');
+    
+    //If they didn't select a unit display preference, default to U.S.
+    if (unitsButton == null){
+        setCheckedRadio(document.getElementsByClassName("units"), 'us');
+        unitsButton = getCheckedRadio(document.getElementsByClassName("units"));
+    }
+	widget.setPreferenceForKey( document.getElementById("latitude").value, makeKey('latitude'));
+	widget.setPreferenceForKey( document.getElementById("longitude").value, makeKey('longitude'));
+	widget.setPreferenceForKey( document.getElementById("name").value, makeKey('name'));
+	widget.setPreferenceForKey( unitsButton.value, makeKey('units'));
+	widget.setPreferenceForKey( '007bff', makeKey('color'));
 	updateForecastEmbed();
-	
+    
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
 	
@@ -107,21 +125,146 @@ function addListenersToAnchors(){
 		false);
 	}
 }
+
+function configureByGeolocation(){
+    //This fails instantly and consistently, but I'll leave it here in case it starts working by some miracle, or somebody figures out a better approach
+    navigator.geolocation.getCurrentPosition(function(){
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        var geocodeResults = reverseGeocode(lat, long);
+        //Do something with the results
+    });
+}
+
+function populateLatLong(){
+    var name = document.getElementById('name').value;
+    if(name != ''){
+        geocode(name, function(lat, long){
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = long;
+        });
+        document.getElementById('done').className = 'enabled';
+    }
+    else{
+        document.getElementById('done').className='';
+    }
+}
+
+function populateLocationName(){
+    var lat = document.getElementById('latitude').value;
+	var long = document.getElementById('longitude').value;
+    if(lat != '' && long != ''){
+        reverseGeocode(lat, long, function(city){
+            document.getElementById('name').value = city;
+        });
+        document.getElementById('done').className = 'enabled';
+    }
+    else{
+        document.getElementById('done').className='';
+    }
+}
+function configureBack(lat, long, city, units){
+    document.getElementById('latitude').value = lat;
+	document.getElementById('longitude').value = long;
+	setCheckedRadio(document.getElementsByName('units'), units);
+    if ( city != undefined ) document.getElementById('name').value = city;
+
+}
 function removeForecastEmbed(){
 	if(!(document.getElementById('forecast') == null)){
 		document.getElementById('forecast').remove();
 	}
 }
 function updateForecastEmbed(){
-	if(!(document.getElementById('update-settings-notice') == null)){
-		document.getElementById('update-settings-notice').remove();
-	}
-	removeForecastEmbed();
+    if( 
+        widget.preferenceForKey(makeKey('latitude')) == undefined ||
+        widget.preferenceForKey(makeKey('longitude')) == undefined ||
+        widget.preferenceForKey(makeKey('name')) == undefined ||
+        widget.preferenceForKey(makeKey('units')) == undefined)  {
+            return false;
+        }
+        
+    if(!(document.getElementById('update-settings-notice') == null)){
+        document.getElementById('update-settings-notice').remove();
+    }
+    removeForecastEmbed();
 
-	var name = String(widget.preferenceForKey('name'));
-	var units = String(widget.preferenceForKey('units'));
-	var latitude = String(widget.preferenceForKey('latitude'));
-	var longitude = String(widget.preferenceForKey('longitude'));
-	
-	document.getElementById('forecast-container').innerHTML='<iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat='+latitude+'&lon='+longitude+'&name='+name+'&color=#007bff&units='+units+'"> </iframe>';
+    var name = String(widget.preferenceForKey(makeKey('name')));
+    var units = String(widget.preferenceForKey(makeKey('units')));
+    var latitude = String(widget.preferenceForKey(makeKey('latitude')));
+    var longitude = String(widget.preferenceForKey(makeKey('longitude')));
+    
+    document.getElementById('forecast-container').innerHTML='<iframe id="forecast" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat='+latitude+'&lon='+longitude+'&name='+name+'&color=#007bff&units='+units+'"> </iframe>';
+}
+// Helpers
+
+//Creates unique pref keys so that we can have multiple instances with unique prefs
+function makeKey(key){
+    return (widget.identifier + "-" + key);
+}
+//Reverse geocode from GeoNames
+//Async with a callback and sync otherwise
+function reverseGeocode(lat, long, callback){
+    var requestString = "http://api.geonames.org/findNearbyPlaceNameJSON?lat="+ lat +"&lng="+ long +"&username=nickswalker&style=SHORT&lang=local&localCountry=true&maxRows=1";
+    var xhr = new XMLHttpRequest();
+    if ( callback != null){
+        xhr.open("GET", requestString, true);
+        
+        xhr.onload = function (e) {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    if(json.geonames[0] != undefined){
+                        callback( json.geonames[0].name );
+                    }
+                }
+            }
+        };
+        xhr.send();
+    }
+    else{
+        xhr.open("GET", requestString, false);
+        xhr.send();
+        var json = JSON.parse(xhr.responseText);
+        if(json.geonames[0] != undefined){
+            return json.geonames[0].name;
+        }
+        
+    }
+}
+function geocode(placeName, callback){
+http://api.geonames.org/searchJSON?q=london&maxRows=10&username=demo
+var requestString = "http://api.geonames.org/searchJSON?q="+ placeName +"&username=nickswalker&style=SHORT&lang=local&localCountry=true&maxRows=1";
+    var xhr = new XMLHttpRequest();
+    if ( callback != null){
+        xhr.open("GET", requestString, true);
+        
+        xhr.onload = function (e) {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    if(json.geonames[0] != undefined){
+                        var lat = json.geonames[0].lat;
+                        var long = json.geonames[0].lng;
+                        callback( lat, long );
+                    }
+                }
+            }
+        };
+        xhr.send();
+    }
+    else{
+        xhr.open("GET", requestString, false);
+        xhr.send();
+        var json = JSON.parse(xhr.responseText);
+        if(json.geonames[0] != undefined){
+            var lat = json.geonames[0].lat;
+            var long = json.geonames[0].lng;
+            return {'lat': lat, 'long': long};
+        }
+        
+    }
+}
+function log(string){
+        document.getElementById('forecast-container').innerHTML = string;
 }

@@ -12,6 +12,7 @@ body {
 	width: 100%;
 	height: 245px;
 	border-radius: 6px;
+    position: relative;
 }
 #back {
 	position: relative;
@@ -42,15 +43,27 @@ body {
 	background-color: white;
 	border-radius: 6px;
 	cursor:pointer;
-	pointer-events: none;
+    pointer-events: all;
+}
+#forecast-io-link{
+    position: absolute;
+    display: inline-block !important;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    width 200px;
+    height 60px;
+    background-color: white;
+    color: black;
+    font-size: 14px;
+    padding: 5px 10px 0 0;
 }
 #info {
 	position: absolute;
-	right:15px;
-	bottom:15px;
+	right:6px;
+	bottom:6px;
 	background-color:transparent;
 	cursor: pointer;
-
 }
 #info::after {
 	content:'i';
@@ -90,14 +103,15 @@ input[type="text"]{
 	width: 49%;
 	float: left;
 	margin-right:15px;
+    margin-top: 15px;
 }
 #longitude {
 	width: 48%;
 	float: right;
+    	margin-top: 15px;
 }
 #name {
 	width: 100%;
-	margin-top: 15px;
 }
 
 /*---= Units  */
@@ -121,8 +135,14 @@ input[type="text"]{
 	float: left;
 	display: inline-block;
 }
+
+/*---= Done  */
 button {
 	border-style: none;
+}
+#done.enabled{
+    color: #007bff !important;
+    pointer-events: all;
 }
 #done {
 	position: absolute;
@@ -131,9 +151,12 @@ button {
 	font-size: 21px;
 	font-family: 'HelveticaNeue-medium';
 	background-color: transparent;
-	color: #007bff;
+	color: rgba(255,255,255,.5);
+    pointer-events: none;
 	cursor: pointer;
+    transition: .4s;
 }
+
 a   {
 	display: inline-block;
 	text-decoration: none;

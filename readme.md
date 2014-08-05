@@ -10,8 +10,8 @@ Take advantage of the coolest weather service yet, [Forecast.io](http://forecast
 
 For regular installation, check the releases tab above for the latest version. Do not download the Github generated source.
 
-Flip to the back using the 'i' button and configure your latitude, longitude and location name. Click 'done'. Enjoy.
+Flip to the back using the 'i' button and start typing a location name. The most likely latitude and longitude will pop up automatically. If these are good, click 'done'. Enjoy.
 
 ## Development
 
-This repository tracks the dashcode project for widget.
+This repository tracks the Dashcode project for widget. Dashcode is no longer supported under OS X 10.9, so in order to open the project you'll need to open the Dashcode executable (located in the application package contents) directly.

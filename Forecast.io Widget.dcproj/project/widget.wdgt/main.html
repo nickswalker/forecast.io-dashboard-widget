@@ -8,6 +8,7 @@
 </head>
 <body onload="load();" apple-part="com.apple.Dashcode.part.StackLayout">
 	<div id="front">
+        <a href="http://forecast.io" id="forecast-io-link">More at Forecast.io</a>
 		<button id="info" onclick="showBack(event)"></button>
 		<div id="forecast-container">
 			<h1 id="update-settings-notice">Flip to the back and update your settings.</h1>
@@ -16,9 +17,10 @@
 	</div>
 	<div id="back">
 		<div id="backing">
+        <input id="name" type="text" name="name" value="" placeholder="Location Name">
 		<input id="latitude" type="number" name="latitude" min="0" max="90" value="" placeholder="Latitude">
 		<input id="longitude" type="number" name="longitude" min="-180" max="180" value="" placeholder="Longitude">
-		<input id="name" type="text" name="name" value="" placeholder="Location Name">
+		
 		<div id="units-list">
 			<span class="section-label">Units</span>
 			<span>U.S.</span><input class="units" type="radio" name ="units" value="us" title="mph and °F">
@@ -29,8 +31,8 @@
 		<button id="done" onclick="showFront(event)">Done</button>
 		<div id="bottom-links">
 		<a id="powered-by" style="margin-right:10px;" href="http://forecast.io">Powered by Forecast.io</a>
-		<a id="credit" style="margin-right:10px;" href="http://nickswalker.com">Nick Walker</a>
-		<a id="version" href="https://github.com/nickswalker/forecast.io-dashboard-widget/releases">v1.1</a>
+		<a id="credit" style="margin-right:10px;" href="http://nickwalker.us">Nick Walker</a>
+		<a id="version" href="https://github.com/nickswalker/forecast.io-dashboard-widget/releases">v1.2</a>
 		</div>
 		</div>
 	</div>
